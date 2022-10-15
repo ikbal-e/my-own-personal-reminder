@@ -7,7 +7,7 @@ function createWindow() {
         width: 800,
         heigth: 600,
         autoHideMenuBar: true,
-        title: 'My Own Personel Reminder',
+        title: 'My Own Personal Reminder',
         webPreferences: {
             nodeIntegration: true,
             enableRemoteModule: true,
