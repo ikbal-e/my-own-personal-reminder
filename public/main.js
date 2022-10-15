@@ -16,6 +16,8 @@ function createWindow() {
         },
     });
 
+    win.webContents.id = 1;
+
     win.on('close', () => app.quit());
 
     win.loadURL(
@@ -27,12 +29,10 @@ function createWindow() {
     return win;
 }
 
-const bringToTop = (event, task) => {
-    app.setBadgeCount(1);
-    const webContents = event.sender
-    const win = BrowserWindow.fromWebContents(webContents)
-    win.flashFrame(true);
-    win.show();
+const restartTask = (event, id) => {
+    const mainWindow = BrowserWindow.fromId(1);
+    mainWindow.flashFrame(true);
+    mainWindow.webContents.send('restartTaskToRenderer', id);
 }
 
 const createInfoPanel = (event, taskId) => {
@@ -71,14 +71,15 @@ app.on('ready', () => {
     createWindow();
     ipcMain.on('taskFinished', createInfoPanel);
     ipcMain.on('closePanel', closeInfoPanel);
+    ipcMain.on('restartTaskToMain', restartTask)
 })
 
 app.on('window-all-closed', () => {
-    if (process.platform != 'darwin') {
+    if (process.platform !== 'darwin') {
         app.quit();
     }
 })
 
 app.on('activate', () => {
-    if (BrowserWindow.getAllWindows().length == 0) createWindow();
+    if (BrowserWindow.getAllWindows().length === 0) createWindow();
 })

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react"
+import React, { useState } from "react"
 import { useTimer } from "react-timer-hook";
 import useStore from "../store";
 
@@ -14,18 +14,20 @@ const Task = (props) => {
         setIsFinished(true);
     }
 
+    window.electronAPI.restartTaskToRenderer((event, id) => {
+        if (props.id === id) {
+            restart();
+        }
+    })
+
     const restart = () => {
         setIsFinished(false);
-        timer.restart(new Date().setSeconds(new Date().getSeconds() + +props.timeout));
+        timer.restart(new Date().setSeconds(new Date().getSeconds() + +props.timeout), true);
     }
 
     const remove = () => {
         removeTask(props.id);
     }
-
-
-    useEffect(() => {
-    }, []);
 
     return (
         <div>
@@ -40,6 +42,7 @@ const Task = (props) => {
                 ? <button onClick={() => timer.pause()}>Pause</button>
                 : <button onClick={() => timer.resume()}>Resume</button>
             )}
+            <button onClick={restart}>Restart</button>
             <button onClick={remove}>Remove</button>
 
         </div>

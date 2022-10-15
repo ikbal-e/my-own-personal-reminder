@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import Task from '../components/task';
 import useStore from '../store';
 
@@ -14,11 +14,6 @@ const Tasks = () => {
         addNewTaskInputRef.current.value = '';
         taskTimeoutInputRef.current.value = '';
     }
-
-    useEffect(() => {
-        
-    });
-
 
     return (
         <>

@@ -1,19 +1,17 @@
 import { useSearchParams } from "react-router-dom";
-import Task from "../components/task";
 import useStore from "../store";
 
 const InfoPanel = () => {
 
     const [searchParams] = useSearchParams();
 
-    console.log('heyyy')
-
     const tasks = useStore(state => state.tasks);
     const taskId = searchParams.get('id');
-    const task = tasks.find(x => x.id == taskId);
+    const task = tasks.find(x => x.id === taskId);
 
     const restartTask = () => {
-        
+        window.electronAPI.restartTaskToMain(taskId);
+        closePanel();
     }
 
     const closePanel = () => {
