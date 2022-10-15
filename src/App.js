@@ -1,34 +1,27 @@
-import { useRef } from 'react';
 import './App.css';
-import useStore from './store';
-import Task from './task';
+import { BrowserRouter, HashRouter, Route, Routes } from 'react-router-dom';
+import Tasks from './pages/Tasks';
+import InfoPanel from './pages/Info-Panel';
 
-function App() {
-  const tasks = useStore(state => state.tasks);
-  const addTask = useStore(state => state.addTask);
-
-  const addNewTaskInputRef = useRef();
-  const taskTimeoutInputRef = useRef();
-  const addNewTask = (taskName, timeout) => {
-    addTask(taskName, timeout);
-    addNewTaskInputRef.current.value = '';
-    taskTimeoutInputRef.current.value = '';
+const App = () => {
+  if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+    return (
+      <BrowserRouter>
+        <Routes>
+          <Route path='/*' element={<Tasks />} />
+          <Route path='/info-panel' element={<InfoPanel />} />
+        </Routes>
+      </BrowserRouter>
+  )}
+ else {
+    return (
+      <HashRouter>
+        <Routes>
+          <Route path='/' element={<Tasks />} />
+          <Route path='/info-panel' element={<InfoPanel />} />
+        </Routes>
+      </HashRouter>)
   }
-
-  return (
-    <div className="App">
-      <label htmlFor="newTaskName">Task:</label>
-      <input ref={addNewTaskInputRef} type="text" id="newTaskName" name="newTaskName"></input>
-      <label htmlFor="taskTimeout">Minutes</label>
-      <input ref={taskTimeoutInputRef} type="text" id="taskTimeout" name="taskTimeout"></input>
-      <button onClick={() => addNewTask(addNewTaskInputRef.current.value, taskTimeoutInputRef.current.value)}>Add</button>
-      <ul>
-        {tasks.map((t, i) => (
-          <Task key={i} text={t.text} id={t.id} timeout={t.timeout}/>
-        ))}
-      </ul>
-    </div>
-  );
 }
 
 export default App;

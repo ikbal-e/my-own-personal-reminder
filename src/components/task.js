@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react"
 import { useTimer } from "react-timer-hook";
-import useStore from "./store";
+import useStore from "../store";
 
 const Task = (props) => {
 
     const removeTask = useStore(state => state.removeTask);
     const [isFinished, setIsFinished] = useState(false);
     const time = new Date();
-    const timer = new useTimer({ expiryTimestamp: time.setSeconds(time.getSeconds() + +props.timeout), onExpire: () => timerFinished() });
+    const timer = new useTimer({ expiryTimestamp: time.setSeconds(time.getSeconds() + +props.timeout), onExpire: () => timerFinished(), autoStart: false });
 
     const timerFinished = () => {
-        window.electronAPI.taskFinished(props.text);
+        window.electronAPI.taskFinished(props.id);
         setIsFinished(true);
     }
 
@@ -23,9 +23,8 @@ const Task = (props) => {
         removeTask(props.id);
     }
 
+
     useEffect(() => {
-        //timer.start();
-        //return () => clearTimeout(timer);
     }, []);
 
     return (
@@ -37,6 +36,10 @@ const Task = (props) => {
                 <button onClick={restart}>Start</button>
             </>
             }
+            {!isFinished && (timer.isRunning
+                ? <button onClick={() => timer.pause()}>Pause</button>
+                : <button onClick={() => timer.resume()}>Resume</button>
+            )}
             <button onClick={remove}>Remove</button>
 
         </div>
