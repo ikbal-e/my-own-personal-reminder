@@ -33,10 +33,10 @@ const Task = (props) => {
         <div>
             {timer.minutes}:{timer.seconds}
             {props.text}
-            {isFinished && <>
-                <div>Finished</div>
-                <button onClick={restart}>Start</button>
-            </>
+            {isFinished &&
+                <>
+                    <div>Finished</div>
+                </>
             }
             {!isFinished && (timer.isRunning
                 ? <button onClick={() => timer.pause()}>Pause</button>
