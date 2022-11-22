@@ -2,8 +2,11 @@ const { BrowserWindow, app, ipcMain, screen } = require('electron');
 const isDev = require('electron-is-dev');
 const path = require('path');
 
+app.disableHardwareAcceleration();
+let mainWindow;
+
 function createWindow() {
-    const win = new BrowserWindow({
+    mainWindow = new BrowserWindow({
         width: 800,
         heigth: 600,
         autoHideMenuBar: true,
@@ -16,17 +19,17 @@ function createWindow() {
         },
     });
 
-    win.webContents.id = 1;
+    mainWindow.webContents.id = 1;
 
-    win.on('close', () => app.quit());
+    mainWindow.on('close', () => app.quit());
 
-    win.loadURL(
+    mainWindow.loadURL(
         isDev
             ? 'http://localhost:3000'
             : `file://${path.join(__dirname, '../build/index.html')}`
     );
 
-    return win;
+    return mainWindow;
 }
 
 const restartTask = (event, id) => {
