@@ -31,7 +31,7 @@ const InfoPanel = () => {
                     <span>{task.text}</span>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: '1' }}>
-                    <Typography variant="caption" display="block" gutterBottom>{task.timeout} seconds</Typography>
+                    <Typography variant="caption" display="block" gutterBottom>{task.timeout} minutes</Typography>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', flex: '1' }} >
                     {task != null &&

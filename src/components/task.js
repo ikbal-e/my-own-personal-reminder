@@ -13,7 +13,7 @@ const Task = (props) => {
     const removeTask = useStore(state => state.removeTask);
     const [isFinished, setIsFinished] = useState(false);
     const time = new Date();
-    const timer = new useTimer({ expiryTimestamp: time.setSeconds(time.getSeconds() + +props.timeout), onExpire: () => timerFinished(), autoStart: false });
+    const timer = new useTimer({ expiryTimestamp: time.setMinutes(time.getMinutes() + +props.timeout), onExpire: () => timerFinished(), autoStart: false });
 
     const timerFinished = () => {
         window.electronAPI.taskFinished(props.id);
@@ -28,7 +28,7 @@ const Task = (props) => {
 
     const restart = () => {
         setIsFinished(false);
-        timer.restart(new Date().setSeconds(new Date().getSeconds() + +props.timeout), true);
+        timer.restart(new Date().setMinutes(new Date().getMinutes() + +props.timeout), true);
     }
 
     const remove = () => {
